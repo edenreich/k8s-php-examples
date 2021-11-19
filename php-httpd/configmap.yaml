@@ -1162,4 +1162,3 @@ data:
     ;  - the global prefix if it's been set (-p argument)
     ;  - /usr/local otherwise
     include=etc/php-fpm.d/*.conf
-
