@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: php-httpd
+  name: php-httpd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: php-httpd
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: php-httpd
+    spec:
+      volumes:
+      - name: httpd-config-volume
+        configMap:
+          name: httpd-config
+      - name: php-config-volume
+        configMap:
+          name: php-config
+      containers:
+      - name: httpd
+        image: httpd:alpine
+        securityContext:
+          allowPrivilegeEscalation: false
+        resources:
+          limits:
+            cpu: 200m
+            memory: 100Mi
+          requests:
+            cpu: 150m
+            memory: 100Mi
+        volumeMounts:
+        - name: httpd-config-volume
+          mountPath: /usr/local/apache2/conf/httpd.conf
+          subPath: httpd.conf
+        - name: httpd-config-volume
+          mountPath: /usr/local/apache2/conf/extra/httpd-vhosts.conf
+          subPath: httpd-vhosts.conf
+        ports:
+        - containerPort: 8080
+      - name: php
+        image: app:latest
+        securityContext:
+          allowPrivilegeEscalation: false
+        resources:
+          limits:
+            cpu: 200m
+            memory: 100Mi
+          requests:
+            cpu: 150m
+            memory: 100Mi
+        volumeMounts:
+        - name: php-config-volume
+          mountPath: /usr/local/etc/php-fpm.conf
+          subPath: php-fpm.conf
+        - name: php-config-volume
+          mountPath: /usr/local/etc/php-fpm.d/www.conf
+          subPath: www.conf
+        ports:
+        - containerPort: 9000
+        imagePullPolicy: IfNotPresent
+

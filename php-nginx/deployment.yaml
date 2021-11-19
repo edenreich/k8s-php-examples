@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: php-nginx
+  name: php-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: php-nginx
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: php-nginx
+    spec:
+      containers:
+      - image: nginx:alpine3.14
+        name: nginx
+        resources: {}
+status: {}
