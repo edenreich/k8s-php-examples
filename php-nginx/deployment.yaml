@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
     app: php-nginx
   name: php-nginx
@@ -10,15 +9,61 @@ spec:
   selector:
     matchLabels:
       app: php-nginx
-  strategy: {}
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: php-nginx
     spec:
+      volumes:
+      - name: nginx-config-volume
+        configMap:
+          name: nginx-config
+      - name: php-config-volume
+        configMap:
+          name: php-config
       containers:
-      - image: nginx:alpine3.14
-        name: nginx
-        resources: {}
-status: {}
+      - name: nginx
+        image: nginx:alpine
+        securityContext:
+          allowPrivilegeEscalation: false
+        resources:
+          limits:
+            cpu: 200m
+            memory: 100Mi
+          requests:
+            cpu: 150m
+            memory: 100Mi
+        volumeMounts:
+        - name: nginx-config-volume
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+        - name: nginx-config-volume
+          mountPath: /etc/nginx/conf.d/default.conf
+          subPath: nginx-vhosts.conf
+        ports:
+        - containerPort: 8080
+      - name: php
+        image: app:latest
+        securityContext:
+          allowPrivilegeEscalation: false
+        resources:
+          limits:
+            cpu: 200m
+            memory: 100Mi
+          requests:
+            cpu: 150m
+            memory: 100Mi
+        volumeMounts:
+        - name: php-config-volume
+          mountPath: /usr/local/etc/php-fpm.conf
+          subPath: php-fpm.conf
+        - name: php-config-volume
+          mountPath: /usr/local/etc/php-fpm.d/www.conf
+          subPath: www.conf
+        ports:
+        - containerPort: 9000
+        imagePullPolicy: IfNotPresent
