@@ -8,16 +8,17 @@ data:
     <VirtualHost *:8080>
         ServerAdmin webmaster@example.com
         ServerName localhost
-        DocumentRoot "/var/www/html"
-        DirectoryIndex index.php
 
-        <Directory "/var/www">
+        <Directory "/usr/local/apache2/htdocs">
             Options Indexes Includes FollowSymLinks SymLinksifOwnerMatch ExecCGI MultiViews
             Require all granted
         </Directory>
 
+        RewriteEngine on
+        RewriteRule ^(.*)$ /index.php?path=$1 [NC,L,QSA]
+
         <FilesMatch "\.php$">
-            SetHandler "proxy:fcgi://127.0.0.1:9000/var/www/html/"
+            SetHandler "proxy:fcgi://127.0.0.1:9000/var/www/index.php"
         </FilesMatch>
     </VirtualHost>
   httpd.conf: |
@@ -219,7 +220,7 @@ data:
     #LoadModule speling_module modules/mod_speling.so
     #LoadModule userdir_module modules/mod_userdir.so
     LoadModule alias_module modules/mod_alias.so
-    #LoadModule rewrite_module modules/mod_rewrite.so
+    LoadModule rewrite_module modules/mod_rewrite.so
 
     <IfModule unixd_module>
     #
@@ -230,8 +231,8 @@ data:
     # It is usually good practice to create a dedicated user and group for
     # running httpd, as with most system services.
     #
-    User daemon
-    Group daemon
+    User www-data
+    Group www-data
 
     </IfModule>
 
@@ -261,7 +262,7 @@ data:
     #
     # If your host doesn't have a registered DNS name, enter its IP address here.
     #
-    #ServerName www.example.com:80
+    ServerName localhost:8080
 
     #
     # Deny access to the entirety of your server's filesystem. You must
