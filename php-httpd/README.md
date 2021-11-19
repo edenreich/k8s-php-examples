@@ -9,5 +9,6 @@
 8. Check the output using http client: `curl http://localhost:8080`
 
 In httpd.conf all I did is comment back in proxy_fcgi_module and I changed the default listen port from 80 to 8080 so we can run that container as non-root user.
-And in httpd-vhosts.conf I've just configured to pass every call to a php file to be proxied to localhost:9000 (php-fpm sidecar container).
+And in httpd-vhosts.conf I've just configured to pass every call to a php file to be proxied to 127.0.0.1:9000 (php-fpm sidecar container).
 I also enabled mod_rewrite so we can have all requests mapped to index.php
+The rest remains as default.
