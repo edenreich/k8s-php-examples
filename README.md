@@ -17,7 +17,7 @@ I'm going to use non-modified publicly available docker images mainted by the PH
 
 To spin-up a cluster I'll use the following command:
 ```sh
-k3d clusters create --agents 3
+k3d cluster create --agents 3
 ```
 
 
