@@ -1,10 +1,10 @@
-## Deploy PHP with K8S
+## Deploy PHP onto K8S
 
-This repository is meant for showing a few simple examples of different combinations of PHP web-servers.
+This repository is providing examples of different PHP web-servers combinations.
 
-* php-fpm proxied by httpd
-* php-fpm proxied by nginx 
-* php with swoole
+* [PHP-FPM proxied by HTTPD](php-httpd#README.md)
+* [PHP-FPM proxied by NGINX](php-nginx#README.md)
+* [PHP with Swoole](php-swoole#README.md)
 
 Unlike other languages in the PHP community the prefered approach was to NOT implement a web-server, instead reuse that what already exists.
 This IMO makes it a bit more difficult to package, but on the other hand you get all the security benefits of well known and maintain web-servers like apache and nginx.
