@@ -1,7 +1,7 @@
 ## PHP-FPM-HTTPD on K8S
 
-1. Build a container image for the app: `docker build -t app:latest .` (for simplicity I just copy index.php)
-2. Import the image we built locally into the local cluster: `k3d image import app:latest`
+1. Build a container image for the app: `docker build -t php-httpd:latest .` (for simplicity I just copy index.php)
+2. Import the image we built locally into the local cluster: `k3d image import php-httpd:latest`
 3. Add PHP-FPM and HTTPD configurations: `kubectl apply -f configmap.yaml`
 4. Create the deployment: `kubectl apply -f deployment.yaml`
 5. Expose the service: `kubectl apply -f service.yaml`

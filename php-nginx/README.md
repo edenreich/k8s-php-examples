@@ -1,8 +1,8 @@
 ## PHP-FPM-NGINX on K8S
 
-1. Build a container image for the app: `docker build -t app:latest .` (for simplicity I just copy index.php)
-2. Import the image we built locally into the local cluster: `k3d image import app:latest`
-3. Add PHP-FPM and NGINX configurations: `kubectl apply -f configmap.yaml`
+1. Build a container image for the app: `docker build -t php-nginx:latest .` (for simplicity I just copy index.php)
+2. Import the image we built locally into the local cluster: `k3d image import app-nginx:latest`
+3. Add PHP Swoole configurations: `kubectl apply -f configmap.yaml`
 4. Create the deployment: `kubectl apply -f deployment.yaml`
 5. Expose the service: `kubectl apply -f service.yaml`
 6. Test the service: `kubectl port-forward svc/php-nginx 8080:8080` (run this on another terminal or in the background with &)

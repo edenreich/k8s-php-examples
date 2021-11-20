@@ -1,0 +1,9 @@
+{
+    "name": "php/swoole",
+    "description": "Simple php swoole web-server",
+    "require": {
+        "php": ">=7.4.24",
+        "swoole/ide-helper": "^4.8"
+    },
+    "license": "MIT"
+}

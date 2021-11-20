@@ -47,7 +47,7 @@ spec:
         ports:
         - containerPort: 8080
       - name: php
-        image: app:latest
+        image: app-nginx:latest
         securityContext:
           allowPrivilegeEscalation: false
         resources:
@@ -66,4 +66,5 @@ spec:
           subPath: www.conf
         ports:
         - containerPort: 9000
+          protocol: TCP
         imagePullPolicy: IfNotPresent

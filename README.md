@@ -19,5 +19,3 @@ To spin-up a cluster I'll use the following command:
 ```sh
 k3d cluster create --agents 3
 ```
-
-
